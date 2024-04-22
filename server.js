@@ -7,6 +7,17 @@ app.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
 app.use(passport.initialize())
 app.use(passport.session())
 
+function isLoggedIn(req, res, next) {
+    req.user ? next() : res.sendStatus(401)
+  }
+  
+function isNotLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+    return res.redirect('/protected')
+    }
+    next()
+}
+
 app.get('/', (req, res) => {
     res.send('<a href="/auth/google">Login with Google</a>')
   })
