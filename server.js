@@ -7,6 +7,8 @@ app.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
 app.use(passport.initialize())
 app.use(passport.session())
 
+require('./passport-config');
+
 function isLoggedIn(req, res, next) {
     req.user ? next() : res.sendStatus(401)
   }
@@ -41,5 +43,17 @@ app.get('/protected', isLoggedIn, (req, res) => {
       <button type="submit">Logout</button>
     </form>`);
   })
+
+app.post('/logout', (req, res) => {
+req.logout(req.user, err => {
+    if(err) return next(err);
+    req.session.destroy();
+    res.redirect("/");
+    });
+})
+
+app.get('/auth/google/failure', (req, res) => {
+res.send('Failed to authenticate with Google..')
+})
 
 app.listen(5000, () => console.log('Listening on port 5000'));
