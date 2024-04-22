@@ -33,3 +33,13 @@ app.get('/', (req, res) => {
     failureRedirect: '/auth/google/failure'
   })
 )
+
+app.get('/protected', isLoggedIn, (req, res) => {
+    res.send(`<h1>Welcome to SSO Demo</h1>
+    <p>Hello, ${req.user.displayName}</p>
+    <form action="/logout" method="post">
+      <button type="submit">Logout</button>
+    </form>`);
+  })
+
+app.listen(5000, () => console.log('Listening on port 5000'));
