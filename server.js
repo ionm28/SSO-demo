@@ -7,7 +7,7 @@ app.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
 app.use(passport.initialize())
 app.use(passport.session())
 
-require('./passport-config');
+require('./authentification');
 
 function isLoggedIn(req, res, next) {
     req.user ? next() : res.sendStatus(401)
